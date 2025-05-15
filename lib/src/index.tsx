@@ -53,6 +53,7 @@ export default function WorldMap<T extends number | string>(
     styleFunction = defaultCountryStyle(borderColor, strokeOpacity),
     tooltipTextFunction = defaultTooltip,
     onClickFunction,
+    onMouseEnter,
     hrefFunction,
     textLabelFunction = () => [],
   } = props;
@@ -85,6 +86,12 @@ export default function WorldMap<T extends number | string>(
     [onClickFunction],
   );
 
+  const onMouse = React.useCallback(
+    (context: CountryContext<T>) => (event: React.MouseEvent<SVGElement>) =>
+      onMouseEnter?.({ ...context, event }),
+    [onMouseEnter],
+  );
+
   const regions = geoData.features.map((feature) => {
     const triggerRef = createRef<SVGPathElement>();
     const { I: isoCode, N: countryName, C: coordinates } = feature;
@@ -113,6 +120,7 @@ export default function WorldMap<T extends number | string>(
         d={pathGenerator(geoFeature)!}
         style={styleFunction(context)}
         onClick={onClick(context)}
+        onMouseEnter={onMouse(context)}
         strokeOpacity={strokeOpacity}
         href={hrefFunction?.(context)}
         key={countryName}

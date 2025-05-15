@@ -50,6 +50,10 @@ export interface Props<T extends string | number = number> {
     context: CountryContext<T> & { event: React.MouseEvent<SVGElement, Event> },
   ) => void;
 
+  onMouseEnter?: (
+    context: CountryContext<T> & { event: React.MouseEvent<SVGElement, Event> },
+  ) => void;
+
   tooltipTextFunction?: (context: CountryContext<T>) => string;
 
   hrefFunction?: (
